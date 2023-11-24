@@ -1,37 +1,39 @@
-name: CI/CD Pipeline
+name: Pipeline CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
-  build-and-deploy:
+  build:
+
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.x]
+
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v1
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build
-      run: npm run build
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test --if-present
 
     - name: Build Docker Image
-      run: |
-        VERSION=$(node -p "require('./package.json').version")
-        docker build -t julien94800/image-front:$VERSION .
-        echo "Built Image: julien94800/image-front:$VERSION"
+      run: docker build -t julien94800/image-front:latest .
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
 
     - name: Push Docker Image to Docker Hub
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
-      run: |
-        VERSION=$(node -p "require('./package.json').version")
-        echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker push julien94800/image-front:$VERSION
-        echo "Pushed Image: julien94800/image-front:$VERSION"
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/image-front:latest
