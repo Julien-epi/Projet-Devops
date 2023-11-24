@@ -37,6 +37,10 @@ jobs:
     - name: Push Docker Image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/image-front:latest
 
+    - name: Continuous Deployment with Watchtower
+      run: |
+        docker-compose -f watchtower-config.yml up -d
+        
     - name: Continuous Deployment
       run: |
         ./script-docker.sh
