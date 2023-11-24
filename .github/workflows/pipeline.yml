@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -37,3 +36,7 @@ jobs:
 
     - name: Push Docker Image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/image-front:latest
+
+    - name: Continuous Deployment
+      run: |
+        ./script-docker.sh
