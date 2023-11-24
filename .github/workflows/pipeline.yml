@@ -1,0 +1,37 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Build Docker Image
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        docker build -t julien94800/image-front:$VERSION .
+        echo "Built Image: julien94800/image-front:$VERSION"
+
+    - name: Push Docker Image to Docker Hub
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push julien94800/image-front:$VERSION
+        echo "Pushed Image: julien94800/image-front:$VERSION"
