@@ -1,0 +1,12 @@
+version: '3'
+services:
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+    restart: always
+    environment:
+      - WATCHTOWER_CLEANUP=true
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
