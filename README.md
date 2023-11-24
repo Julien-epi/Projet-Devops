@@ -1,40 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Projet DevOps pour Application Next.js
 
-## Getting Started
+Ce projet illustre la mise en œuvre d'un pipeline CI/CD pour une application Next.js en utilisant Docker, GitHub Actions, et Docker Hub.
 
-First, run the development server:
+## Architecture du Projet
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Next.js**: Framework pour la création de l'application.
+- **Docker**: Utilisé pour la conteneurisation de l'application.
+- **GitHub Actions**: Automatise la CI/CD.
+- **Docker Hub**: Registre pour stocker les images Docker.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuration de CI/CD
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Le pipeline CI/CD est configuré avec GitHub Actions pour deux branches principales :
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- `main`: Branche pour la production.
+- `develop`: Branche pour le développement et les tests.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Workflow
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Le fichier `.github/workflows/pipeline.yml` contient les étapes suivantes :
 
-## Learn More
+1. **Installation des Dépendances**: Installe les dépendances nécessaires pour le projet.
+2. **Build**: Construit l'application Next.js.
+3. **Tests**: Exécute les tests unitaires (si présents).
+4. **Docker Build**: Construit l'image Docker de l'application.
+5. **Push sur Docker Hub**: Pousse l'image Docker sur Docker Hub.
 
-To learn more about Next.js, take a look at the following resources:
+## Utilisation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pour exécuter ce projet localement, veuillez suivre ces étapes :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Cloner le dépôt : `
