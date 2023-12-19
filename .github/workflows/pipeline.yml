@@ -29,8 +29,8 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@master
       with:
         args: >
-          -Dsonar.projectKey=MonProjet
-          -Dsonar.organization=monOrganisation
+          -Dsonar.projectKey=Julien-epi_Projet-Devops_AYyB4gS-iG9UQ8S_ethY
+          -Dsonar.organization=Julien-epi
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
