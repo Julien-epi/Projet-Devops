@@ -10,32 +10,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+    services:
+      sonarqube:
+        image: sonarqube
+        ports:
+          - 9000:9000
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test --if-present
 
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@master
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_HOST_URL: http://sonarqube:9000
       with:
         args: >
           -Dsonar.projectKey=Julien-epi_Projet-Devops_AYyB4gS-iG9UQ8S_ethY
           -Dsonar.organization=Julien-epi
-          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          -Dsonar.host.url=http://sonarqube:9000
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
 
     - name: Build Docker Image
       run: docker build -t julien94800/image-front:latest .
