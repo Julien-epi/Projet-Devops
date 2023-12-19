@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,6 +24,15 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test --if-present
+
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@master
+      with:
+        args: >
+          -Dsonar.projectKey=MonProjet
+          -Dsonar.organization=monOrganisation
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
     - name: Build Docker Image
       run: docker build -t julien94800/image-front:latest .
