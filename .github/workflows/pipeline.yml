@@ -27,6 +27,13 @@ jobs:
     - run: npm run build --if-present
     - run: npm test --if-present
 
+    # Étape pour tester la disponibilité de SonarQube
+    - name: Vérifier la disponibilité de SonarQube
+      run: |
+        echo "Vérification de la disponibilité de SonarQube..."
+        curl --retry 5 --retry-delay 10 --retry-connrefused http://sonarqube:9000
+
+    # Étape SonarQube Scan
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@master
       env:
