@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    depends_on:
+      - sonarqube
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - app-network
+
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=projet-devops
+      - SONAR_TOKEN=sqp_5e9ec7cd6a000693b0b7fdd184dced061eae0e38
+    volumes:
+      - "C:\\Users\\julie\\Bureau\\4ème-année\\DevOps\\Projet-Devops:/usr/src"
+    depends_on:
+      - sonarqube
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:

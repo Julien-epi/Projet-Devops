@@ -1,0 +1,6 @@
+projectKey=projet-devops
+serverUrl=http://sonarqube:9000
+serverVersion=10.3.0.82913
+dashboardUrl=http://sonarqube:9000/dashboard?id=projet-devops
+ceTaskId=AYyCpZ2k-vIYOlUPxzh0
+ceTaskUrl=http://sonarqube:9000/api/ce/task?id=AYyCpZ2k-vIYOlUPxzh0
