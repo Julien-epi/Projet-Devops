@@ -41,18 +41,3 @@ jobs:
     - name: Continuous Deployment
       run: |
         ./script-docker.sh
-
-  watchtower:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get -y install docker-compose
-
-    - name: Run Watchtower
-      run: |
-        docker-compose -f watchtower-config.yml up -d
