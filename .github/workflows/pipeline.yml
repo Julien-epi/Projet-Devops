@@ -27,6 +27,9 @@ jobs:
 
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       with:
         args: >
           -Dsonar.projectKey=Julien-epi_Projet-Devops_AYyB4gS-iG9UQ8S_ethY
