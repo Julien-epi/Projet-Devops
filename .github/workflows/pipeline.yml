@@ -17,6 +17,15 @@ jobs:
           - 9000:9000
 
     steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test --if-present
 
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@master
@@ -29,7 +38,6 @@ jobs:
           -Dsonar.organization=Julien-epi
           -Dsonar.host.url=http://sonarqube:9000
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
 
     - name: Build Docker Image
       run: docker build -t julien94800/image-front:latest .
